@@ -1,0 +1,28 @@
+void selectionSort(Array a) {
+    int n = len(a);
+    for (int i = 0; i < n - 1; i = i + 1) {
+        int minIdx = i;
+        for (int j = i + 1; j < n; j = j + 1) {
+            if (a[j] < a[minIdx]) {
+                minIdx = j;
+            }
+        }
+        int temp = a[minIdx];
+        a[minIdx] = a[i];
+        a[i] = temp;
+    }
+}
+
+Array arr = array(5, 0);
+arr[0] = 64;
+arr[1] = 25;
+arr[2] = 12;
+arr[3] = 22;
+arr[4] = 11;
+
+selectionSort(arr);
+print arr[0];
+print arr[1];
+print arr[2];
+print arr[3];
+print arr[4];

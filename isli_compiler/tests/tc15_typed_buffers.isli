@@ -1,0 +1,33 @@
+// TC-15: Typed Buffers (f32, f64, i32, u8) and Buffer Operations
+
+Buffer f32 = f32buf(8, 1.5);
+print len(f32);
+print buf_type(f32);
+print f32[0];
+f32[0] = 42.25;
+print f32[0];
+
+Buffer f64 = f64buf(16, 0.0);
+print len(f64);
+print buf_type(f64);
+
+// Multi-threaded SIMT dispatch on f64 buffer
+int N = 10000;
+Buffer big = f64buf(N, 0.0);
+dispatch(N) {
+    |i|
+    big[i] = i * 2.5;
+}
+print big[0];
+print big[10];
+print big[9999];
+
+// SIMD dot product on buffers
+Buffer v1 = f64buf(8, 2.0);
+Buffer v2 = f64buf(8, 3.0);
+print simd_dot(v1, v2);
+
+// Buffer conversion to and from Array
+Array arr = buf_to_array(v1);
+print len(arr);
+print arr[0];

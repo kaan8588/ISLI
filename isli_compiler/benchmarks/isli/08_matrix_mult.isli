@@ -1,0 +1,24 @@
+// Benchmark 08: 150x150 Matrix Multiplication (1D Flattened indexing)
+void runBench() {
+    int N = 150;
+    Array a = array(N * N, 1.5);
+    Array b = array(N * N, 2.5);
+    Array c = array(N * N, 0.0);
+
+    float t0 = clock();
+    for (int i = 0; i < N; i = i + 1) {
+        int iOffset = i * N;
+        for (int j = 0; j < N; j = j + 1) {
+            float sum = 0.0;
+            for (int k = 0; k < N; k = k + 1) {
+                sum = sum + a[iOffset + k] * b[k * N + j];
+            }
+            c[iOffset + j] = sum;
+        }
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

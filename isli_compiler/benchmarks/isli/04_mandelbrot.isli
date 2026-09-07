@@ -1,0 +1,32 @@
+// Benchmark 04: Mandelbrot Calculation (300x300 grid, 50 max iters)
+void runBench() {
+    int width = 300;
+    int height = 300;
+    int maxIter = 50;
+
+    float t0 = clock();
+    int count = 0;
+    for (int y = 0; y < height; y = y + 1) {
+        float ci = (y * 2.0 / height) - 1.0;
+        for (int x = 0; x < width; x = x + 1) {
+            float cr = (x * 3.0 / width) - 2.0;
+            float zr = 0.0;
+            float zi = 0.0;
+            int iter = 0;
+            while (zr * zr + zi * zi <= 4.0 and iter < maxIter) {
+                float temp = zr * zr - zi * zi + cr;
+                zi = 2.0 * zr * zi + ci;
+                zr = temp;
+                iter = iter + 1;
+            }
+            if (iter == maxIter) {
+                count = count + 1;
+            }
+        }
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

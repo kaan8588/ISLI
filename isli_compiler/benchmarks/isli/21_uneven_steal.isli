@@ -1,0 +1,20 @@
+// Benchmark 21: Uneven per-index work (1..64 sqrts). Forces steal-half load balance.
+void runBench() {
+    int N = 30000;
+    Buffer buf = f64buf(N, 0.0);
+    float t0 = clock();
+    dispatch(N) {
+        |i|
+        int inner = (i % 64) + 1;
+        double acc = 0.0;
+        for (int k = 0; k < inner; k = k + 1) {
+            acc = acc + sqrt(k + 1.0);
+        }
+        buf[i] = acc;
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

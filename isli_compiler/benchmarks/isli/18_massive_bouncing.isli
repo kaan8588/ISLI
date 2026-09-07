@@ -1,0 +1,14 @@
+Array data = array(2000000, 1.0);
+
+void run() {
+    float t0 = clock();
+    dispatch(2000000) {
+        |i|
+        data[i] = data[i] * 1.05 + 0.5;
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+run();

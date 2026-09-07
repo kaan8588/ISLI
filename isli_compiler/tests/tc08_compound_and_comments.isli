@@ -1,0 +1,20 @@
+// TC-08: Block Comments and Compound Operators Test
+
+/*
+   Cok satirli
+   blok yorum blogu
+   burada test ediliyor.
+*/
+
+int x = 100;
+x += 25;
+print x; // 125
+
+x -= 15;
+print x; // 110
+
+x *= 2;
+print x; // 220
+
+x /= 4;
+print x; // 55

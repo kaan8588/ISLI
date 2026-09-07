@@ -1,0 +1,42 @@
+// TC-12: Standard Data Structures Test
+// 1. Stack
+ObjStack st = stack();
+push(st, 10);
+push(st, 20);
+print pop(st);  // 20
+print peek(st); // 10
+
+// 2. List
+ObjList li = list();
+push_back(li, 100);
+push_front(li, 50);
+print front(li); // 50
+print back(li);  // 100
+
+// 3. Min-Heap & Max-Heap
+ObjHeap hMin = min_heap();
+heap_push(hMin, 30);
+heap_push(hMin, 10);
+heap_push(hMin, 20);
+print heap_pop(hMin); // 10
+
+ObjHeap hMax = max_heap();
+heap_push(hMax, 30);
+heap_push(hMax, 50);
+heap_push(hMax, 10);
+print heap_pop(hMax); // 50
+
+// 4. Red-Black Tree Map
+Map map = rbtree();
+rb_insert(map, 101, 7500);
+rb_insert(map, 102, 9200);
+print rb_get(map, 101); // 7500
+print rb_has(map, 102); // true
+print rb_has(map, 999); // false
+
+// 5. B-Tree
+ObjBTree bt = btree();
+btree_insert(bt, 1, 555);
+btree_insert(bt, 2, 777);
+print btree_get(bt, 1); // 555
+print btree_get(bt, 2); // 777

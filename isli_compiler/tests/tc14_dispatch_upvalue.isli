@@ -1,0 +1,14 @@
+// TC-14: Dispatch kernel accessing upvalue array
+fun runParallelTask(int count) {
+    Array buf = array(count, 0.0);
+    dispatch(count) {
+        |i|
+        buf[i] = i * 3.0;
+    }
+    return buf;
+}
+
+Array res = runParallelTask(10);
+print res[0];
+print res[5];
+print res[9];

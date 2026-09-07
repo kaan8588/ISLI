@@ -1,0 +1,18 @@
+// TC-03: JIT Type Safety and String Operations
+string join(string a, string b) {
+    return a + b;
+}
+
+void testTypes() {
+    string s = join("Isli", "Lang");
+    print s;
+    print s == "IsliLang";
+    print s != "Other";
+    print 10 < 20;
+    print 30 > 15;
+    print -50;
+    print !false;
+    print !true;
+}
+
+testTypes();

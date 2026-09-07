@@ -1,0 +1,34 @@
+// Benchmark 24: 500k calls of 16-local mixer. Hits JIT stack=local layout.
+int mix(int v) {
+    int a1 = v + 1;
+    int a2 = v + 2;
+    int a3 = v + 3;
+    int a4 = v + 4;
+    int a5 = v + 5;
+    int a6 = v + 6;
+    int a7 = v + 7;
+    int a8 = v + 8;
+    int a9 = v + 9;
+    int a10 = v + 10;
+    int a11 = v + 11;
+    int a12 = v + 12;
+    int a13 = v + 13;
+    int a14 = v + 14;
+    int a15 = v + 15;
+    int a16 = v + 16;
+    return a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9 + a10 + a11 + a12 + a13 + a14 + a15 + a16;
+}
+
+void runBench() {
+    int N = 500000;
+    float t0 = clock();
+    int s = 0;
+    for (int i = 0; i < N; i = i + 1) {
+        s = s + mix(i);
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

@@ -1,0 +1,13 @@
+// TC-09: Multi-threaded SIMT Dispatch Test
+int N = 100000;
+Array arr = array(N, 0.0);
+
+dispatch(N) {
+    |i|
+    arr[i] = i * 2.0;
+}
+
+print arr[0];
+print arr[500];
+print arr[99999];
+print len(arr);

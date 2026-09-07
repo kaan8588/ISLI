@@ -1,0 +1,201 @@
+#include <cstdio>
+#include "debug.hpp"
+#include "object.hpp"
+#include "value.hpp"
+
+void disassembleChunk(Chunk* chunk, const char* name) {
+    printf("== %s ==\n", name);
+
+    for (int offset = 0; offset < chunk->count;) {
+        offset = disassembleInstruction(chunk, offset);
+    }
+}
+
+static int constantInstruction(const char* name, Chunk* chunk, int offset) {
+    uint8_t constant = chunk->code[offset + 1];
+    printf("%-16s %4d '", name, constant);
+    printValue(chunk->constants.values[constant]);
+    printf("'\n");
+    return offset + 2;
+}
+
+static int byteInstruction(const char* name, Chunk* chunk, int offset) {
+    uint8_t slot = chunk->code[offset + 1];
+    printf("%-16s %4d\n", name, slot);
+    return offset + 2;
+}
+
+static int simpleInstruction(const char* name, int offset) {
+    printf("%s\n", name);
+    return offset + 1;
+}
+
+static int jumpInstruction(const char* name, int sign, Chunk* chunk, int offset) {
+    uint16_t jump = static_cast<uint16_t>(chunk->code[offset + 1] << 8);
+    jump |= chunk->code[offset + 2];
+    printf("%-16s %4d -> %d\n", name, offset, offset + 3 + sign * jump);
+    return offset + 3;
+}
+
+int disassembleInstruction(Chunk* chunk, int offset) {
+    printf("%04d ", offset);
+    if (offset > 0 && chunk->lines[offset] == chunk->lines[offset - 1]) {
+        printf("   | ");
+    } else {
+        printf("%4d ", chunk->lines[offset]);
+    }
+
+    uint8_t instruction = chunk->code[offset];
+    switch (instruction) {
+        case OP_CONSTANT:
+            return constantInstruction("OP_CONSTANT", chunk, offset);
+        case OP_NIL:
+            return simpleInstruction("OP_NIL", offset);
+        case OP_TRUE:
+            return simpleInstruction("OP_TRUE", offset);
+        case OP_FALSE:
+            return simpleInstruction("OP_FALSE", offset);
+        case OP_POP:
+            return simpleInstruction("OP_POP", offset);
+        case OP_GET_LOCAL:
+            return byteInstruction("OP_GET_LOCAL", chunk, offset);
+        case OP_SET_LOCAL:
+            return byteInstruction("OP_SET_LOCAL", chunk, offset);
+        case OP_GET_GLOBAL:
+            return constantInstruction("OP_GET_GLOBAL", chunk, offset);
+        case OP_DEFINE_GLOBAL:
+            return constantInstruction("OP_DEFINE_GLOBAL", chunk, offset);
+        case OP_SET_GLOBAL:
+            return constantInstruction("OP_SET_GLOBAL", chunk, offset);
+        case OP_GET_UPVALUE:
+            return byteInstruction("OP_GET_UPVALUE", chunk, offset);
+        case OP_SET_UPVALUE:
+            return byteInstruction("OP_SET_UPVALUE", chunk, offset);
+        case OP_GET_PROPERTY:
+            return constantInstruction("OP_GET_PROPERTY", chunk, offset);
+        case OP_SET_PROPERTY:
+            return constantInstruction("OP_SET_PROPERTY", chunk, offset);
+        case OP_EQUAL:
+            return simpleInstruction("OP_EQUAL", offset);
+        case OP_GREATER:
+            return simpleInstruction("OP_GREATER", offset);
+        case OP_LESS:
+            return simpleInstruction("OP_LESS", offset);
+        case OP_ADD:
+            return simpleInstruction("OP_ADD", offset);
+        case OP_SUBTRACT:
+            return simpleInstruction("OP_SUBTRACT", offset);
+        case OP_MULTIPLY:
+            return simpleInstruction("OP_MULTIPLY", offset);
+        case OP_DIVIDE:
+            return simpleInstruction("OP_DIVIDE", offset);
+        case OP_MODULO:
+            return simpleInstruction("OP_MODULO", offset);
+        case OP_NOT:
+            return simpleInstruction("OP_NOT", offset);
+        case OP_NEGATE:
+            return simpleInstruction("OP_NEGATE", offset);
+        case OP_PRINT:
+            return simpleInstruction("OP_PRINT", offset);
+        case OP_JUMP:
+            return jumpInstruction("OP_JUMP", 1, chunk, offset);
+        case OP_JUMP_IF_FALSE:
+            return jumpInstruction("OP_JUMP_IF_FALSE", 1, chunk, offset);
+        case OP_LOOP:
+            return jumpInstruction("OP_LOOP", -1, chunk, offset);
+        case OP_CALL:
+            return byteInstruction("OP_CALL", chunk, offset);
+        case OP_CLOSURE: {
+            offset++;
+            uint8_t constant = chunk->code[offset++];
+            printf("%-16s %4d ", "OP_CLOSURE", constant);
+            printValue(chunk->constants.values[constant]);
+            printf("\n");
+
+            auto* function = AS_FUNCTION(chunk->constants.values[constant]);
+            for (int j = 0; j < function->upvalueCount; j++) {
+                int isLocal = chunk->code[offset++];
+                int index = chunk->code[offset++];
+                printf("%04d      |                     %s %d\n",
+                       offset - 2, isLocal ? "local" : "upvalue", index);
+            }
+
+            return offset;
+        }
+        case OP_CLOSE_UPVALUE:
+            return simpleInstruction("OP_CLOSE_UPVALUE", offset);
+        case OP_RETURN:
+            return simpleInstruction("OP_RETURN", offset);
+        case OP_STRUCT:
+            return constantInstruction("OP_STRUCT", chunk, offset);
+        case OP_DISPATCH:
+            return byteInstruction("OP_DISPATCH", chunk, offset);
+        case OP_DISPATCH2: {
+            uint8_t dimCount = chunk->code[offset + 1];
+            uint8_t tileFlags = chunk->code[offset + 2];
+            uint8_t reduceOp = chunk->code[offset + 3];
+            printf("%-16s dims:%d tile:%d reduce:%d\n", "OP_DISPATCH2", dimCount, tileFlags, reduceOp);
+            return offset + 4;
+        }
+        case OP_GET_LOCAL_PTR:
+            return byteInstruction("OP_GET_LOCAL_PTR", chunk, offset);
+        case OP_GET_GLOBAL_PTR:
+            return constantInstruction("OP_GET_GLOBAL_PTR", chunk, offset);
+        case OP_GET_PROPERTY_PTR:
+            return constantInstruction("OP_GET_PROPERTY_PTR", chunk, offset);
+        case OP_GET_UPVALUE_PTR:
+            return byteInstruction("OP_GET_UPVALUE_PTR", chunk, offset);
+        case OP_DEREF:
+            return simpleInstruction("OP_DEREF", offset);
+        case OP_SET_DEREF:
+            return simpleInstruction("OP_SET_DEREF", offset);
+        case OP_ANONYMOUS_STRUCT: {
+            uint8_t fieldCount = chunk->code[offset + 1];
+            printf("%-16s %4d fields\n", "OP_ANONYMOUS_STRUCT", fieldCount);
+            return offset + 2 + fieldCount;
+        }
+        case OP_GET_INDEX:
+            return simpleInstruction("OP_GET_INDEX", offset);
+        case OP_SET_INDEX:
+            return simpleInstruction("OP_SET_INDEX", offset);
+        case OP_GET_INDEX_PTR:
+            return simpleInstruction("OP_GET_INDEX_PTR", offset);
+        case OP_BUILD_ARRAY:
+            return byteInstruction("OP_BUILD_ARRAY", chunk, offset);
+        case OP_SIMD_ARRAY_COPY:
+            return simpleInstruction("OP_SIMD_ARRAY_COPY", offset);
+        case OP_SIMD_ARRAY_FILL:
+            return simpleInstruction("OP_SIMD_ARRAY_FILL", offset);
+        case OP_ADD_NUM:
+            return simpleInstruction("OP_ADD_NUM", offset);
+        case OP_SUBTRACT_NUM:
+            return simpleInstruction("OP_SUBTRACT_NUM", offset);
+        case OP_MULTIPLY_NUM:
+            return simpleInstruction("OP_MULTIPLY_NUM", offset);
+        case OP_DIVIDE_NUM:
+            return simpleInstruction("OP_DIVIDE_NUM", offset);
+        case OP_MODULO_NUM:
+            return simpleInstruction("OP_MODULO_NUM", offset);
+        case OP_GET_INDEX_NUM:
+            return simpleInstruction("OP_GET_INDEX_NUM", offset);
+        case OP_SET_INDEX_NUM:
+            return simpleInstruction("OP_SET_INDEX_NUM", offset);
+        case OP_GET_INDEX_BUF:
+            return simpleInstruction("OP_GET_INDEX_BUF", offset);
+        case OP_SET_INDEX_BUF:
+            return simpleInstruction("OP_SET_INDEX_BUF", offset);
+        case OP_LOOP_INCR_LESS:
+        case OP_LOOP_INCR_LEQ: {
+            uint8_t iterSlot = chunk->code[offset + 1];
+            uint8_t limitSlot = chunk->code[offset + 2];
+            uint16_t jump = static_cast<uint16_t>(chunk->code[offset + 3] << 8) | chunk->code[offset + 4];
+            printf("%-16s iter:%d limit:%d -> %d\n", 
+                   instruction == OP_LOOP_INCR_LESS ? "OP_LOOP_INCR_LESS" : "OP_LOOP_INCR_LEQ",
+                   iterSlot, limitSlot, offset + 5 - jump);
+            return offset + 5;
+        }
+        default:
+            printf("Unknown opcode %d\n", instruction);
+            return offset + 1;
+    }
+}

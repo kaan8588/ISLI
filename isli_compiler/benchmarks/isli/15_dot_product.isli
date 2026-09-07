@@ -1,0 +1,14 @@
+// Benchmark 15: AVX2 SIMD Dot Product (1,000,000 Doubles)
+void runBench() {
+    int N = 1000000;
+    Array a = array(N, 1.5);
+    Array b = array(N, 2.5);
+
+    float t0 = clock();
+    float total = simd_dot(a, b);
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

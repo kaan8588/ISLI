@@ -1,0 +1,6 @@
+// TC-23: Dimension product overflow is a runtime error, not UB / hang.
+print 0;
+dispatch(10000000000, 10000000000, 10000000000) {
+    |i, j, k|
+}
+print 1;

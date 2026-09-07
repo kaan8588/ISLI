@@ -1,0 +1,17 @@
+// Benchmark 13: String Slicing (50,000 Zero-Copy Slices)
+void runBench() {
+    string longStr = "Antigravity_Advanced_Agentic_Compiler_Optimization_And_Virtual_Machine_Architecture_Benchmark_String_Slice_1234567890_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int N = 50000;
+
+    float t0 = clock();
+    for (int i = 0; i < N; i = i + 1) {
+        string s1 = stakel(longStr, 30);
+        string s2 = staker(longStr, 30);
+        string s3 = ssub(longStr, 10, 20);
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

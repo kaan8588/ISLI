@@ -1,0 +1,3 @@
+// TC-16: CPU feature string is non-empty.
+String info = cpu_info();
+print len(info) > 10;

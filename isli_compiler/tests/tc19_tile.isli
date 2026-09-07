@@ -1,0 +1,14 @@
+// TC-19: 2D tiled dispatch covers every cell once.
+int W = 8;
+int H = 8;
+Buffer b = f64buf(W * H, 0.0);
+dispatch(W, H) tile(4, 4) {
+    |i, j|
+    b[i + j * W] = 1.0;
+}
+double s = 0.0;
+dispatch(W * H) reduce(+) into s {
+    |k|
+    return b[k];
+}
+print s;

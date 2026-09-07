@@ -1,0 +1,16 @@
+// Benchmark 19: Parallel dispatch reduce(+) of 500k ones.
+// Stresses packed-CAS heartbeat + deterministic pairwise reduce tree.
+void runBench() {
+    int N = 500000;
+    double s = 0.0;
+    float t0 = clock();
+    dispatch(N) reduce(+) into s {
+        |i|
+        return 1.0;
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

@@ -1,0 +1,21 @@
+// TC-11: AVX2 SIMD Operations Test
+Array a = array(16, 2.0);
+Array b = array(16, 3.0);
+Array dst1 = array(16, 0.0);
+Array dst2 = array(16, 0.0);
+Array dst3 = array(16, 0.0);
+
+Array added = simd_add(dst1, a, b);
+print added[0]; // 5
+
+Array multiplied = simd_mul(dst2, a, b);
+print multiplied[0]; // 6
+
+Array fmaRes = simd_fma(dst3, a, b, a); // 2*3 + 2 = 8
+print fmaRes[0]; // 8
+
+float totalSum = simd_sum(a);
+print totalSum; // 32
+
+float dotProduct = simd_dot(a, b);
+print dotProduct; // 16 * (2*3) = 96

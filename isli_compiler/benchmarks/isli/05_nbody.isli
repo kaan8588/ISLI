@@ -1,0 +1,40 @@
+// Benchmark 05: N-Body Simulation (3 bodies, 50,000 steps)
+void runBench() {
+    Array x = [0.0, 1.0, -1.0];
+    Array y = [0.0, 0.5, -0.5];
+    Array vx = [0.0, 0.01, -0.01];
+    Array vy = [0.0, -0.01, 0.01];
+    Array mass = [100.0, 1.0, 1.0];
+    float dt = 0.01;
+    int steps = 50000;
+
+    float t0 = clock();
+    for (int s = 0; s < steps; s = s + 1) {
+        for (int i = 0; i < 3; i = i + 1) {
+            float fx = 0.0;
+            float fy = 0.0;
+            for (int j = 0; j < 3; j = j + 1) {
+                if (i != j) {
+                    float dx = x[j] - x[i];
+                    float dy = y[j] - y[i];
+                    float distSq = dx * dx + dy * dy + 0.001;
+                    float dist = sqrt(distSq);
+                    float f = (mass[j]) / (distSq * dist);
+                    fx = fx + f * dx;
+                    fy = fy + f * dy;
+                }
+            }
+            vx[i] = vx[i] + fx * dt;
+            vy[i] = vy[i] + fy * dt;
+        }
+        for (int i = 0; i < 3; i = i + 1) {
+            x[i] = x[i] + vx[i] * dt;
+            y[i] = y[i] + vy[i] * dt;
+        }
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

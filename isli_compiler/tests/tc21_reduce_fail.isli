@@ -1,0 +1,6 @@
+// TC-21: Reduce kernel without a number return must not hang; script continues.
+float s = 0.0;
+dispatch(128) reduce(+) into s {
+    |i|
+}
+print 1;

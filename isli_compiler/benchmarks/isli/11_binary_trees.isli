@@ -1,0 +1,29 @@
+// Benchmark 11: Binary Trees Creation and Traversal (Depth 12)
+struct TreeNode {}
+
+TreeNode makeTree(int depth) {
+    if (depth <= 0) {
+        return { val: 1, left: nil, right: nil };
+    }
+    return {
+        val: depth,
+        left: makeTree(depth - 1),
+        right: makeTree(depth - 1)
+    };
+}
+
+int checkTree(TreeNode node) {
+    if (node == nil) return 0;
+    return node.val + checkTree(node.left) + checkTree(node.right);
+}
+
+void runBench() {
+    float t0 = clock();
+    TreeNode root = makeTree(12);
+    int checksum = checkTree(root);
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

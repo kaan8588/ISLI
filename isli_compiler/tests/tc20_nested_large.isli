@@ -1,0 +1,12 @@
+// TC-20: Nested dispatch with inner N >= 4096 must stay serial (no currentJob smash).
+Buffer b = f64buf(1, 0.0);
+dispatch(5000) {
+    |i|
+    dispatch(4096) {
+        |j|
+        if (j == 0) {
+            atomic_add(b, 0, 1.0);
+        }
+    }
+}
+print b[0];

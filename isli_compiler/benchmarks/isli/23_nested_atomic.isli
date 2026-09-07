@@ -1,0 +1,17 @@
+// Benchmark 23: Nested dispatch. Outer parallel, inner serial + atomic_add.
+void runBench() {
+    Buffer b = f64buf(1, 0.0);
+    float t0 = clock();
+    dispatch(8000) {
+        |i|
+        dispatch(8) {
+            |j|
+            atomic_add(b, 0, 1.0);
+        }
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

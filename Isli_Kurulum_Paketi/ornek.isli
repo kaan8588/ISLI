@@ -1,0 +1,9 @@
+int a = 5;
+print a;
+
+Buffer buf = f64buf(8, 1.0);
+dispatch(8) {
+    |i|
+    buf[i] = buf[i] * 2.0;
+}
+print buf[0];

@@ -1,0 +1,16 @@
+// Benchmark 03: Ackermann Function (A(3, 6))
+int ack(int m, int n) {
+    if (m == 0) return n + 1;
+    if (n == 0) return ack(m - 1, 1);
+    return ack(m - 1, ack(m, n - 1));
+}
+
+void runBench() {
+    float t0 = clock();
+    int res = ack(3, 6);
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

@@ -1,0 +1,13 @@
+Isli VS Code eklentisi: snippet, syntax highlight, F5 ile calistirma.
+
+Sozdizimi degisince guncelle:
+- language-configuration.json
+- syntaxes/isli.tmLanguage.json
+- snippets/isli.code-snippets
+
+Paketlemek (Node.js gerekir):
+
+    cd vscode-isli
+    npx --yes @vscode/vsce package
+
+Cikan .vsix dosyasini VS Code: Extensions -> Install from VSIX.

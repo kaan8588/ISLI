@@ -1,0 +1,9 @@
+// TC-07: Integer and Floating Point Output Formatting Test
+print 0;
+print 1234567;
+print 10000000;
+print -9999999;
+print 3.14159;
+print 0.000125;
+print 42.0;
+print 42.5;

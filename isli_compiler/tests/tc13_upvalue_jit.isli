@@ -1,0 +1,14 @@
+// TC-13: JIT Upvalue read and write test
+fun makeAccumulator(int start) {
+    int acc = start;
+    fun add(int delta) {
+        acc = acc + delta;
+        return acc;
+    }
+    return add;
+}
+
+Function f = makeAccumulator(100);
+print f(25);
+print f(50);
+print f(-30);

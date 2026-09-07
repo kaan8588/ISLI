@@ -1,0 +1,83 @@
+{
+  "name": "isli-lang",
+  "displayName": "Isli Language Support",
+  "description": "Isli language: highlight, snippets, F5 run (dispatch/JIT)",
+  "version": "1.1.0",
+  "publisher": "IsliTeam",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "isli",
+        "aliases": [
+          "Isli",
+          "isli"
+        ],
+        "extensions": [
+          ".isli"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "isli",
+        "scopeName": "source.isli",
+        "path": "./syntaxes/isli.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "isli",
+        "path": "./snippets/isli.code-snippets"
+      }
+    ],
+    "commands": [
+      {
+        "command": "isli.run",
+        "title": "Run Isli Program",
+        "icon": "$(play)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "isli.run",
+          "when": "resourceExtname == .isli",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "isli.run",
+          "when": "resourceExtname == .isli",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "isli.run",
+        "key": "f5",
+        "when": "resourceExtname == .isli"
+      }
+    ],
+    "configuration": {
+      "title": "Isli",
+      "properties": {
+        "isli.compilerPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the Isli compiler executable (isli.exe). Leave empty to auto-detect."
+        }
+      }
+    }
+  }
+}

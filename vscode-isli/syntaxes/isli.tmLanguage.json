@@ -1,0 +1,81 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Isli",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#keywords" },
+    { "include": "#numbers" },
+    { "include": "#operators" },
+    { "include": "#functions" }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.isli",
+          "match": "\\b(if|else|while|for|return|dispatch|parallel|reduce|tile|into)\\b"
+        },
+        {
+          "name": "storage.type.isli",
+          "match": "\\b(fun|struct|int|float|double|string|bool|void|Buffer|Array)\\b"
+        },
+        {
+          "name": "storage.modifier.isli",
+          "match": "\\b(uniform)\\b"
+        },
+        {
+          "name": "constant.language.isli",
+          "match": "\\b(true|false|null|nil|NULL)\\b"
+        },
+        {
+          "name": "support.function.isli",
+          "match": "\\b(print|clock|cpu_info|len|sv_len|stakel|staker|sv_trim_left|sv_trim_right|strim|ssub|sfind|stakefl|stakefr|atomic_add|array|f32buf|f64buf|i32buf|u8buf|buf_type|simd_copy|simd_fill|simd_add|simd_mul|simd_dot)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.isli",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.isli",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.isli",
+          "begin": "/\\*",
+          "end": "\\*/"
+        },
+        {
+          "name": "comment.line.double-slash.isli",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "numbers": {
+      "name": "constant.numeric.isli",
+      "match": "\\b\\d+(\\.\\d+)?\\b"
+    },
+    "operators": {
+      "name": "keyword.operator.isli",
+      "match": "(&|\\*|\\+|-|/|%|==|!=|<=|>=|<|>|=|and|or|!)"
+    },
+    "functions": {
+      "patterns": [
+        {
+          "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
+          "captures": {
+            "1": { "name": "entity.name.function.isli" }
+          }
+        }
+      ]
+    }
+  },
+  "scopeName": "source.isli"
+}

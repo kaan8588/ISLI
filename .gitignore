@@ -1,0 +1,66 @@
+# Build artifacts
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.pdb
+*.ilk
+*.exp
+*.map
+
+# Packaged binaries (rebuild locally)
+*.vsix
+
+# Secrets / credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+**/secrets/**
+**/*secret*
+id_rsa
+id_ed25519
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+target/
+
+# Test / bench leftovers
+*.tmp
+tests/out.tmp
+tests/err.tmp
+out.txt
+err.txt
+*.csv.bak
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# Editor crash / local
+*.swp
+*~
+.idea/
+.vs/
+*.user
+*.suo
+*.log
+*.local
+
+# Cursor / AI local
+.cursor/
+*.canvas.tsx

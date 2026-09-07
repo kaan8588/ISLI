@@ -1,0 +1,6 @@
+float testFn2(Array arr, int n) {
+    float mx = arr[0];
+    print mx;
+}
+Array data = [170, 45, 75];
+testFn2(data, 3);

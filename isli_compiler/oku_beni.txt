@@ -1,0 +1,1 @@
+Isli derleyici / VM kaynak kodu. Degisiklik ve duzeltme buradan.

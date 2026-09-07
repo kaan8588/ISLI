@@ -1,0 +1,23 @@
+// TC-05: Struct Return and Property Mutation Test
+struct Vector2D {}
+
+Vector2D makeVec(int x, int y) {
+    Vector2D v = Vector2D();
+    v.x = x;
+    v.y = y;
+    return v;
+}
+
+Vector2D addVec(Vector2D a, Vector2D b) {
+    Vector2D r = Vector2D();
+    r.x = a.x + b.x;
+    r.y = a.y + b.y;
+    return r;
+}
+
+Vector2D v1 = makeVec(10, 20);
+Vector2D v2 = makeVec(30, 40);
+Vector2D v3 = addVec(v1, v2);
+
+print v3.x;
+print v3.y;

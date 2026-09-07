@@ -1,0 +1,10 @@
+// TC-18: Nested dispatch from a parallel outer kernel (serial inner).
+Buffer b = f64buf(1, 0.0);
+dispatch(5000) {
+    |i|
+    dispatch(2) {
+        |j|
+        atomic_add(b, 0, 1.0);
+    }
+}
+print b[0];

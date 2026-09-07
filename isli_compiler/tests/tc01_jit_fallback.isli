@@ -1,0 +1,20 @@
+// TC-01: JIT Fallback Test
+// Function inner has property access and closures so it stays in interpreter.
+// Function outer is pure arithmetic so it is JIT-compiled.
+struct Box {}
+
+int inner(int x, int y) {
+    Box b = Box();
+    b.val = x * 10 + y;
+    return b.val;
+}
+
+void outer() {
+    int res1 = inner(3, 4);
+    int res2 = inner(5, 6);
+    print res1;
+    print res2;
+    print res1 + res2;
+}
+
+outer();

@@ -1,0 +1,32 @@
+// Benchmark 22: 256x256 5-point stencil, tiled 16x16. Tests 2D tile index map.
+void runBench() {
+    int W = 256;
+    int H = 256;
+    int N = W * H;
+    Buffer src = f64buf(N, 1.0);
+    Buffer dst = f64buf(N, 0.0);
+    float t0 = clock();
+    dispatch(W, H) tile(16, 16) {
+        |x, y|
+        int idx = x + y * W;
+        double acc = src[idx];
+        if (x > 0) {
+            acc = acc + src[idx - 1];
+        }
+        if (x < W - 1) {
+            acc = acc + src[idx + 1];
+        }
+        if (y > 0) {
+            acc = acc + src[idx - W];
+        }
+        if (y < H - 1) {
+            acc = acc + src[idx + W];
+        }
+        dst[idx] = acc * 0.2;
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

@@ -1,0 +1,16 @@
+Bu klasor, Isli'yi baska bir Windows makineye tasimak icin sablondur.
+
+Git deposunda isli.exe ve .vsix yoktur (yeniden uretilir).
+
+Kaynak makinede:
+
+1. isli_compiler icinde mingw32-make ile isli.exe uret.
+2. vscode-isli icinde: npx --yes @vscode/vsce package
+3. isli.exe ve isli-lang-*.vsix dosyalarini bu klasore kopyala.
+4. USB ile tasi, hedefte Kurulum.bat calistir.
+
+Kurulum.bat:
+- VSIX'i VS Code'a yukler (code CLI varsa)
+- isli.exe -> %LOCALAPPDATA%\Isli\bin ve PATH
+
+VS Code ayarinda isli.compilerPath bos birakilabilir; eklenti bu PATH'i de dener.

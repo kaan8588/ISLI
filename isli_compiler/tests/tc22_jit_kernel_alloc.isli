@@ -1,0 +1,7 @@
+// TC-22: JIT kernel allocates arrays; RETURN must drop locals (no crash).
+dispatch(20000) {
+    |i|
+    Array t = array(8, 0.0);
+    t[0] = i;
+}
+print 1;

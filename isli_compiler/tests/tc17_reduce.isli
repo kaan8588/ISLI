@@ -1,0 +1,35 @@
+// TC-17: Deterministic dispatch reduce (+, *, min, max) serial + parallel.
+double sumSmall = 0.0;
+dispatch(100) reduce(+) into sumSmall {
+    |i|
+    return i;
+}
+print sumSmall;
+
+double prod = 1.0;
+dispatch(5) reduce(*) into prod {
+    |i|
+    return i + 1;
+}
+print prod;
+
+double mn = 0.0;
+dispatch(8) reduce(min) into mn {
+    |i|
+    return 10.0 - i;
+}
+print mn;
+
+double mx = 0.0;
+dispatch(8) reduce(max) into mx {
+    |i|
+    return i;
+}
+print mx;
+
+double sumBig = 0.0;
+dispatch(10000) reduce(+) into sumBig {
+    |i|
+    return 1.0;
+}
+print sumBig;

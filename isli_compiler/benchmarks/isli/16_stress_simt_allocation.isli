@@ -1,0 +1,16 @@
+void run() {
+    float t0 = clock();
+    dispatch(50000) {
+        |i|
+        Array temp = array(20, 0.0);
+        for (int j = 0; j < 20; j = j + 1) {
+            temp[j] = (i + j) * 1.5;
+        }
+        push(temp, 999.0);
+    }
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+run();

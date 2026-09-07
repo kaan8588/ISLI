@@ -1,0 +1,15 @@
+// Benchmark 02: Recursive Fibonacci (fib(32))
+int fib(int n) {
+    if (n < 2) return n;
+    return fib(n - 1) + fib(n - 2);
+}
+
+void runBench() {
+    float t0 = clock();
+    int res = fib(32);
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

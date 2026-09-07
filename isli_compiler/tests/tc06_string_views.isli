@@ -1,0 +1,18 @@
+// TC-06: String Views and Bounds Checking Test
+string text = "CompilerArchitecture";
+
+print len(text);
+print stakel(text, 8);
+print staker(text, 12);
+print ssub(text, 8, 4);
+print sfind(text, "Arch");
+print sfind(text, "NotFound");
+
+string email = "user@domain.com";
+print stakefl(email, "@");
+print stakefr(email, "@");
+
+// Edge cases: out of bounds clamping
+print stakel(text, 100);
+print staker(text, 100);
+print ssub(text, 5, 200);

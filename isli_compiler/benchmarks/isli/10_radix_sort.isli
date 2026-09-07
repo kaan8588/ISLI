@@ -1,0 +1,57 @@
+// Benchmark 10: Radix Sort (30,000 numbers)
+float getMax(Array arr, int n) {
+    float mx = arr[0];
+    for (int i = 1; i < n; i = i + 1) {
+        if (arr[i] > mx) mx = arr[i];
+    }
+    return mx;
+}
+
+void countSort(Array arr, int n, int exp) {
+    Array output = array(n, 0);
+    Array count = array(10, 0);
+
+    for (int i = 0; i < n; i = i + 1) {
+        int digit = floor(arr[i] / exp) % 10;
+        count[digit] = count[digit] + 1;
+    }
+
+    for (int i = 1; i < 10; i = i + 1) {
+        count[i] = count[i] + count[i - 1];
+    }
+
+    for (int i = n - 1; i >= 0; i = i - 1) {
+        int digit = floor(arr[i] / exp) % 10;
+        output[count[digit] - 1] = arr[i];
+        count[digit] = count[digit] - 1;
+    }
+
+    for (int i = 0; i < n; i = i + 1) {
+        arr[i] = output[i];
+    }
+}
+
+void radixSort(Array arr, int n) {
+    float m = getMax(arr, n);
+    for (int exp = 1; floor(m / exp) > 0; exp = exp * 10) {
+        countSort(arr, n, exp);
+    }
+}
+
+void runBench() {
+    int N = 30000;
+    Array arr = array(N, 0);
+    int seed = 12345;
+    for (int i = 0; i < N; i = i + 1) {
+        seed = (seed * 1103515245 + 12345) % 2147483648;
+        arr[i] = seed % 100000;
+    }
+
+    float t0 = clock();
+    radixSort(arr, N);
+    float t1 = clock();
+    float ms = (t1 - t0) * 1000.0;
+    print ms;
+}
+
+runBench();

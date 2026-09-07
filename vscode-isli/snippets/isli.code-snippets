@@ -1,0 +1,87 @@
+{
+  "Print Statement": {
+    "prefix": "print",
+    "body": ["print ${1:value};"],
+    "description": "Print statement"
+  },
+  "Int Declaration": {
+    "prefix": "int",
+    "body": ["int ${1:name} = ${2:0};"],
+    "description": "Declare an int"
+  },
+  "Float Declaration": {
+    "prefix": "float",
+    "body": ["float ${1:name} = ${2:0.0};"],
+    "description": "Declare a float"
+  },
+  "Function Definition": {
+    "prefix": "fun",
+    "body": [
+      "fun ${1:name}(${2:args}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Define a function"
+  },
+  "Dispatch 1D": {
+    "prefix": "dispatch",
+    "body": [
+      "dispatch(${1:N}) {",
+      "\t|${2:i}|",
+      "\t$0",
+      "}"
+    ],
+    "description": "SIMT dispatch loop"
+  },
+  "Dispatch Reduce": {
+    "prefix": "reduce",
+    "body": [
+      "dispatch(${1:N}) reduce(${2:+}) into ${3:sum} {",
+      "\t|${4:i}|",
+      "\treturn $0;",
+      "}"
+    ],
+    "description": "Dispatch with reduce"
+  },
+  "Typed Buffer": {
+    "prefix": "f64buf",
+    "body": ["Buffer ${1:buf} = f64buf(${2:N}, ${3:0.0});"],
+    "description": "Create an f64 buffer"
+  },
+  "Struct Definition": {
+    "prefix": "struct",
+    "body": [
+      "struct ${1:Name} {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Define a struct"
+  },
+  "If Statement": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condition}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "If condition"
+  },
+  "While Loop": {
+    "prefix": "while",
+    "body": [
+      "while (${1:condition}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "While loop"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (int ${1:i} = 0; ${1:i} < ${2:count}; ${1:i} = ${1:i} + 1) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "For loop"
+  }
+}
